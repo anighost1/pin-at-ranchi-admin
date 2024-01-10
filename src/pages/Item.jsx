@@ -12,17 +12,23 @@ import AddIcon from '@mui/icons-material/Add';
 
 export default function Item() {
 
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState({})
+    const [dataPerPage, setDataPerPage] = useState(10)
     const navigate = useNavigate()
 
+    const fetchItems = async (page = 1, limit = dataPerPage) => {
+        const data = await configServ.getItems(page, limit)
+        setItems(data)
+        // console.log(data)
+    }
+
     useEffect(() => {
-        const fetchItems = async () => {
-            const data = await configServ.getItems()
-            setItems(data)
-            // console.log(data)
-        }
         fetchItems()
-    }, [])
+    }, [dataPerPage])
+
+    const pageSwitch = (page, limit) => {
+        fetchItems(page, limit)
+    }
 
     const head = [
         {
@@ -69,13 +75,19 @@ export default function Item() {
                     color="primary"
                     startDecorator={<AddIcon />}
                     size="sm"
-                    onClick={()=>{navigate('details')}}
+                    onClick={() => { navigate('details') }}
                 >
                     Add Item
                 </Button>
             </Box>
-            <OrderTable rows={items} head={head} />
-            <OrderList rows={items} head={head} />
+            <OrderTable
+                data={items}
+                head={head}
+                pageSwitch={pageSwitch}
+                setDataPerPage={setDataPerPage}
+                dataPerPage={dataPerPage}
+            />
+            <OrderList data={items} head={head} />
         </Box>
     );
 }

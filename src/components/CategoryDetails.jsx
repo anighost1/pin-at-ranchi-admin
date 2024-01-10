@@ -179,7 +179,7 @@ export default function CategoryDetails() {
                                         variant="solid"
                                         onClick={handleSubmit}
                                     >
-                                        Save
+                                        {isEdit ? 'Save' : 'Add'}
                                     </Button>
                                 </CardActions>
                             </CardOverflow>

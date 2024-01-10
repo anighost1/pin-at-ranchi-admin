@@ -83,11 +83,16 @@ function RowMenu({ id }) {
 }
 
 
-export default function OrderTable({ data, head }) {
+export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDataPerPage }) {
     const [rows, setRows] = React.useState([]);
     const [order, setOrder] = React.useState('desc');
     const [selected, setSelected] = React.useState([]);
     const [open, setOpen] = React.useState(false);
+
+
+    const handleDataPerPage = (e, value) => {
+        setDataPerPage(value)
+    }
     const renderFilters = () => (
         <React.Fragment>
             <FormControl size="sm">
@@ -111,13 +116,45 @@ export default function OrderTable({ data, head }) {
                     <Option value="debit">Debit</Option>
                 </Select>
             </FormControl>
+            <FormControl size="sm">
+                <FormLabel>Data per page</FormLabel>
+                <Select
+                    size="sm"
+                    value={dataPerPage}
+                    onChange={handleDataPerPage}
+                >
+                    <Option value={1}>1</Option>
+                    <Option value={10}>10</Option>
+                    <Option value={50}>50</Option>
+                    <Option value={100}>100</Option>
+                </Select>
+            </FormControl>
         </React.Fragment>
     );
+
     React.useEffect(() => {
         if (data.data) {
             setRows(data.data)
         }
     }, [data])
+
+    function createArray(number) {
+        const resultArray = Array.from({ length: number }, (_, index) => index + 1);
+        return resultArray;
+    }
+
+    const nextPage = () => {
+        if (data.next) {
+            pageSwitch(data.next?.page, data.next?.limit)
+        }
+    }
+    const prevPage = () => {
+        if (data.prev) {
+            pageSwitch(data.prev?.page, data.prev?.limit)
+        }
+    }
+
+
     return (
         <React.Fragment>
             <Sheet
@@ -172,7 +209,7 @@ export default function OrderTable({ data, head }) {
                 }}
             >
                 <FormControl sx={{ flex: 1 }} size="sm">
-                    <FormLabel>Search for Item</FormLabel>
+                    <FormLabel>Search</FormLabel>
                     <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
                 </FormControl>
                 {renderFilters()}
@@ -300,17 +337,19 @@ export default function OrderTable({ data, head }) {
                     variant="outlined"
                     color="neutral"
                     startDecorator={<KeyboardArrowLeftIcon />}
+                    onClick={prevPage}
                 >
                     Previous
                 </Button>
 
                 <Box sx={{ flex: 1 }} />
-                {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
+                {createArray(data.totalPage).map((page) => (
                     <IconButton
                         key={page}
                         size="sm"
-                        variant={Number(page) ? 'outlined' : 'plain'}
+                        variant={data.currentPage === page ? 'outlined' : 'plain'}
                         color="neutral"
+                        onClick={() => pageSwitch(page, data.currentLimit)}
                     >
                         {page}
                     </IconButton>
@@ -322,10 +361,11 @@ export default function OrderTable({ data, head }) {
                     variant="outlined"
                     color="neutral"
                     endDecorator={<KeyboardArrowRightIcon />}
+                    onClick={nextPage}
                 >
                     Next
                 </Button>
             </Box>
-        </React.Fragment>
+        </React.Fragment >
     );
 }
