@@ -74,8 +74,22 @@ export default function ItemDetails() {
     }, [itemId])
 
 
-    const handleSubmit = () => {
-        console.log(formData)
+    const handleSubmit = async () => {
+        // console.log(formData)
+        if (!isEdit) {
+            try {
+                const result = await configServ.addtems(formData)
+                console.log('Successfully added')
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            try {
+                console.log('edit')
+            } catch (err) {
+                console.log(err)
+            }
+        }
     }
 
     return (

@@ -6,6 +6,10 @@ const getItems = (page = 1, limit = 10) => {
     return http.get(`/api/item?page=${page}&limit=${limit}`)
 }
 
+const addtems = (data) => {
+    return http.post(`/api/item`, data)
+}
+
 const getItemById = (id) => {
     return http.get(`/api/item/${id}`)
 }
@@ -22,7 +26,7 @@ const addImage = async (data) => {
     }
     try {
         const result = await axios.post(`${appServiceName}/api/image`, data, config)
-        console.log(result.data) 
+        console.log(result.data)
     } catch (err) {
         console.log(err)
     }
@@ -45,6 +49,7 @@ const getCategoryById = (id) => {
 
 const configServ = {
     getItems,
+    addtems,
     getItemById,
     getImageByItemId,
     addImage,
