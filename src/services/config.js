@@ -10,6 +10,10 @@ const addtems = (data) => {
     return http.post(`/api/item`, data)
 }
 
+const updateItem = (data) => {
+    return http.put(`/api/item`, data)
+}
+
 const getItemById = (id) => {
     return http.get(`/api/item/${id}`)
 }
@@ -40,6 +44,10 @@ const addCategory = (data) => {
     return http.post('/api/category', data)
 }
 
+const updateCategory = (data) => {
+    return http.put('/api/category', data)
+}
+
 const getCategoryById = (id) => {
     return http.get(`/api/category/${id}`)
 }
@@ -50,11 +58,13 @@ const getCategoryById = (id) => {
 const configServ = {
     getItems,
     addtems,
+    updateItem,
     getItemById,
     getImageByItemId,
     addImage,
     getCategories,
     addCategory,
+    updateCategory,
     getCategoryById,
 }
 

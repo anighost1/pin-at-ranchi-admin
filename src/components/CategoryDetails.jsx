@@ -68,7 +68,8 @@ export default function CategoryDetails() {
             }
         } else {
             try {
-                console.log('edit')
+                const result = await configServ.updateCategory(formData)
+                console.log('Successfully updated')
             } catch (err) {
                 console.log(err)
             }

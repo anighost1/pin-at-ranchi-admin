@@ -16,6 +16,7 @@ import {
     CardOverflow,
     TabPanel,
     Grid,
+    Autocomplete
 } from '@mui/joy';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 import { useParams } from 'react-router-dom';
@@ -75,7 +76,7 @@ export default function ItemDetails() {
 
 
     const handleSubmit = async () => {
-        // console.log(formData)
+        console.log(formData)
         if (!isEdit) {
             try {
                 const result = await configServ.addtems(formData)
@@ -85,7 +86,8 @@ export default function ItemDetails() {
             }
         } else {
             try {
-                console.log('edit')
+                const result = await configServ.updateItem(formData)
+                console.log('Successfully Updated')
             } catch (err) {
                 console.log(err)
             }
@@ -300,6 +302,19 @@ export default function ItemDetails() {
                                             name='pin'
                                             value={formData.pin || ''}
                                             onChange={handleOnchange}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid xs={12} sm={8}>
+                                    <FormControl sx={{ flexGrow: 1 }}>
+                                        <FormLabel>Keyword</FormLabel>
+                                        <Autocomplete
+                                            placeholder='You can type multiple keywords'
+                                            options={[]}
+                                            freeSolo
+                                            multiple
+                                            value={formData.keyword || []}
+                                            onChange={(e, value) => { handleOnchangeSelect('keyword', value) }}
                                         />
                                     </FormControl>
                                 </Grid>
