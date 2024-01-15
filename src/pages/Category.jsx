@@ -13,16 +13,23 @@ import AddIcon from '@mui/icons-material/Add';
 export default function Category() {
 
     const [Category, setCategory] = useState({})
+    const [dataPerPage, setDataPerPage] = useState(10)
     const navigate = useNavigate()
 
+
+    const fetchItems = async (page = 1, limit = dataPerPage) => {
+        const data = await configServ.getCategories(page, limit)
+        setCategory(data)
+        console.log(data)
+    }
+
     useEffect(() => {
-        const fetchItems = async () => {
-            const data = await configServ.getCategories()
-            setCategory(data)
-            // console.log(data)
-        }
         fetchItems()
-    }, [])
+    }, [dataPerPage])
+
+    const pageSwitch = (page, limit) => {
+        fetchItems(page, limit)
+    }
 
     const head = [
         {
@@ -70,7 +77,13 @@ export default function Category() {
                     Add Category
                 </Button>
             </Box>
-            <OrderTable data={Category} head={head} />
+            <OrderTable
+                data={Category}
+                head={head}
+                pageSwitch={pageSwitch}
+                setDataPerPage={setDataPerPage}
+                dataPerPage={dataPerPage}
+            />
             <OrderList data={Category} head={head} />
         </Box>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -16,9 +16,12 @@ import {
     CardOverflow,
     TabPanel,
     Grid,
+    Autocomplete
 } from '@mui/joy';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 import { useParams } from 'react-router-dom';
+import configServ from '../services/config';
+import ItemImageUpload from './ItemImageUpload';
 
 
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
@@ -30,6 +33,17 @@ export default function ItemDetails() {
 
     const { itemId } = useParams()
     const [formData, setFormData] = useState({})
+    const [categoryList, setCategoryList] = useState([])
+    const [isEdit, setIsEdit] = useState(false)
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const data = await configServ.getCategories()
+            setCategoryList(data.data)
+            // console.log(data)
+        }
+        fetchCategory()
+    }, [])
 
     const handleOnchange = (e) => {
         const { name, value } = e.target
@@ -43,8 +57,41 @@ export default function ItemDetails() {
         handleOnchange({ target: { name: name, value: value } })
     }
 
-    const handleSubmit = () => {
+
+    useEffect(() => {
+        const fetchItem = async (id) => {
+            try {
+                const result = await configServ.getItemById(id)
+                // console.log(result)
+                setFormData(result)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        if (itemId) {
+            fetchItem(itemId)
+            setIsEdit(true)
+        }
+    }, [itemId])
+
+
+    const handleSubmit = async () => {
         console.log(formData)
+        if (!isEdit) {
+            try {
+                const result = await configServ.addtems(formData)
+                console.log('Successfully added')
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            try {
+                const result = await configServ.updateItem(formData)
+                console.log('Successfully Updated')
+            } catch (err) {
+                console.log(err)
+            }
+        }
     }
 
     return (
@@ -59,7 +106,7 @@ export default function ItemDetails() {
             >
                 <Box sx={{ px: { xs: 2, md: 6 } }}>
                     <Typography level="h2" component="h1" sx={{ mt: 1, mb: 2 }}>
-                        {itemId || 'Add Item'}
+                        {isEdit ? formData.name : 'Add Item'}
                     </Typography>
                 </Box>
                 <Tabs
@@ -92,15 +139,19 @@ export default function ItemDetails() {
                         <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={0}>
                             Item
                         </Tab>
-                        <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
-                            Team
-                        </Tab>
-                        <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
-                            Plan
-                        </Tab>
-                        <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
-                            Billing
-                        </Tab>
+                        {isEdit && (
+                            <>
+                                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
+                                    Image
+                                </Tab>
+                                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
+                                    Plan
+                                </Tab>
+                                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
+                                    Billing
+                                </Tab>
+                            </>
+                        )}
                     </TabList>
                     <TabPanel value={0}>
                         <Card>
@@ -130,18 +181,18 @@ export default function ItemDetails() {
                                             value={formData.category || ''}
                                             onChange={(e, value) => { handleOnchangeSelect('category', value) }}
                                         >
-                                            <Option value="1">
-                                                Indochina Time (Bangkok){' '}
+                                            <Option value={''}>
                                                 <Typography textColor="text.tertiary" ml={0.5}>
-                                                    — GMT+07:00
+                                                    Select
                                                 </Typography>
                                             </Option>
-                                            <Option value="2">
-                                                Indochina Time (Ho Chi Minh City){' '}
-                                                <Typography textColor="text.tertiary" ml={0.5}>
-                                                    — GMT+07:00
-                                                </Typography>
-                                            </Option>
+                                            {categoryList.map((item) => (
+                                                <Option key={item._id} value={item._id}>
+                                                    <Typography textColor="text.tertiary" ml={0.5}>
+                                                        {item.name}
+                                                    </Typography>
+                                                </Option>
+                                            ))}
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -254,23 +305,39 @@ export default function ItemDetails() {
                                         />
                                     </FormControl>
                                 </Grid>
+                                <Grid xs={12} sm={8}>
+                                    <FormControl sx={{ flexGrow: 1 }}>
+                                        <FormLabel>Keyword</FormLabel>
+                                        <Autocomplete
+                                            placeholder='You can type multiple keywords'
+                                            options={[]}
+                                            freeSolo
+                                            multiple
+                                            value={formData.keyword || []}
+                                            onChange={(e, value) => { handleOnchangeSelect('keyword', value) }}
+                                        />
+                                    </FormControl>
+                                </Grid>
                             </Grid>
-                           
+
                             <CardOverflow sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
                                 <CardActions sx={{ alignSelf: 'flex-end', pt: 2 }}>
                                     <Button size="sm" variant="outlined" color="neutral">
                                         Cancel
                                     </Button>
-                                    <Button 
-                                    size="sm" 
-                                    variant="solid"
-                                    onClick={handleSubmit}
+                                    <Button
+                                        size="sm"
+                                        variant="solid"
+                                        onClick={handleSubmit}
                                     >
-                                        Save
+                                        {isEdit ? 'Save' : 'Add'}
                                     </Button>
                                 </CardActions>
                             </CardOverflow>
                         </Card>
+                    </TabPanel>
+                    <TabPanel value={1}>
+                        <ItemImageUpload id={itemId} />
                     </TabPanel>
                 </Tabs>
             </Box >

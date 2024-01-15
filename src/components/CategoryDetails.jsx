@@ -68,7 +68,8 @@ export default function CategoryDetails() {
             }
         } else {
             try {
-                console.log('edit')
+                const result = await configServ.updateCategory(formData)
+                console.log('Successfully updated')
             } catch (err) {
                 console.log(err)
             }
@@ -179,7 +180,7 @@ export default function CategoryDetails() {
                                         variant="solid"
                                         onClick={handleSubmit}
                                     >
-                                        Save
+                                        {isEdit ? 'Save' : 'Add'}
                                     </Button>
                                 </CardActions>
                             </CardOverflow>
