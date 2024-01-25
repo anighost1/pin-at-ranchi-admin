@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export const appServiceName = 'http://localhost:6969'; 
+// export const appServiceName = 'http://localhost:6969'; 
+export const appServiceName = process.env.REACT_APP_BASE_URL; 
 
 class RestfulProvider {
     constructor() {
