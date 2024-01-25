@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import {
     ImageList,
@@ -10,6 +10,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { IconButton } from '@mui/joy';
 
 export default function ImageCard({ data }) {
+    useEffect(()=>{
+        console.log(data)
+    },[])
     return (
         <ImageList
             sx={{

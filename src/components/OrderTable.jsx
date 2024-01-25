@@ -61,7 +61,7 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-function RowMenu({ id }) {
+function RowMenu({ id, status, statusChange }) {
     const navigate = useNavigate()
     return (
         <Dropdown>
@@ -73,17 +73,20 @@ function RowMenu({ id }) {
             </MenuButton>
             <Menu size="sm" sx={{ minWidth: 140 }}>
                 <MenuItem onClick={() => { navigate(`details/${id}`) }}>Edit</MenuItem>
-                <MenuItem>Rename</MenuItem>
-                <MenuItem>Move</MenuItem>
                 <Divider />
-                <MenuItem color="danger">Delete</MenuItem>
+                <MenuItem
+                    color={status ? 'danger' : 'success'}
+                    onClick={()=>{statusChange(id)}}
+                >
+                    {status ? 'Inactive' : 'Active'}
+                </MenuItem>
             </Menu>
         </Dropdown>
     );
 }
 
 
-export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDataPerPage }) {
+export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDataPerPage, statusChange }) {
     const [rows, setRows] = React.useState([]);
     const [order, setOrder] = React.useState('desc');
     const [selected, setSelected] = React.useState([]);
@@ -312,7 +315,7 @@ export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDat
                                         {/* <Link level="body-xs" component="button">
                                             Download
                                         </Link> */}
-                                        <RowMenu id={row._id} />
+                                        <RowMenu id={row._id} status={row.status} statusChange={statusChange} />
                                     </Box>
                                 </td>
                             </tr>

@@ -144,12 +144,6 @@ export default function ItemDetails() {
                                 <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={1}>
                                     Image
                                 </Tab>
-                                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={2}>
-                                    Plan
-                                </Tab>
-                                <Tab sx={{ borderRadius: '6px 6px 0 0' }} indicatorInset value={3}>
-                                    Billing
-                                </Tab>
                             </>
                         )}
                     </TabList>

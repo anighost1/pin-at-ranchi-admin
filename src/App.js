@@ -6,7 +6,7 @@ import Box from '@mui/joy/Box';
 
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import MyProfile from './pages/MyProfile';
+import Dashboard from './pages/Dashboard';
 import Category from './pages/Category';
 import Item from './pages/Item';
 import ItemDetails from './components/ItemDetails';
@@ -35,7 +35,7 @@ function App() {
                     }}
                 >
                     <Routes>
-                        <Route path='/' element={<MyProfile />} />
+                        <Route path='/' element={<Dashboard />} />
                         <Route path='/category' element={<Category />} />
                         <Route path='/category/details' element={<CategoryDetails />} />
                         <Route path='/category/details/:id' element={<CategoryDetails />} />
