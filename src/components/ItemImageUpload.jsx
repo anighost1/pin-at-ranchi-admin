@@ -5,6 +5,8 @@ import {
     Typography,
     Stack,
     Grid,
+    Divider,
+    CircularProgress
 } from '@mui/joy';
 import configServ from '../services/config';
 import ImageCard from './ImageList';
@@ -14,6 +16,7 @@ export default function ItemImageUpload({ id }) {
 
     const [files, setFiles] = useState([]);
     const [itemImg, setItemImg] = useState([]);
+    const [processing, setProcessing] = useState(false);
 
     const handleFileChange = (event) => {
         const selectedFiles = event.target.files;
@@ -42,11 +45,14 @@ export default function ItemImageUpload({ id }) {
 
     const fetchImage = async () => {
         try {
+            setProcessing(true)
             const result = await configServ.getImageByItemId(id)
             console.log(result)
             setItemImg(result)
+            setProcessing(false)
         } catch (err) {
             console.log(err)
+            setProcessing(false)
         }
     }
 
@@ -58,14 +64,11 @@ export default function ItemImageUpload({ id }) {
 
     return (
         <Stack>
-            {/* <Grid container spacing={2} padding={2}>
-                {itemImg.map((item)=>(
-                    <Grid key={item._id} xs={12} sm={6} md={4}>
-                        <ImageCard data={item}/>
-                    </Grid>
-                ))}
-            </Grid> */}
-            <ImageCard data={itemImg} />
+            <Box>
+                {processing && <CircularProgress size='sm'/>}
+                <ImageCard data={itemImg} />
+            </Box>
+            <Divider/>
             <Box>
                 <Typography variant="h5">Upload Image(s)</Typography>
                 <Box

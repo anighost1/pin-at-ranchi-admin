@@ -14,18 +14,29 @@ export default function Category() {
 
     const [Category, setCategory] = useState({})
     const [dataPerPage, setDataPerPage] = useState(10)
+    const [isChanged, setIsChanged] = useState(false)
     const navigate = useNavigate()
 
 
     const fetchItems = async (page = 1, limit = dataPerPage) => {
         const data = await configServ.getCategories(page, limit)
         setCategory(data)
-        console.log(data)
+        // console.log(data)
+    }
+
+    const statusChange = async (id) => {
+        try {
+            const result = await configServ.categoryStatusChange({ id })
+            console.log(result)
+            setIsChanged((state) => (!state))
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     useEffect(() => {
         fetchItems()
-    }, [dataPerPage])
+    }, [dataPerPage, isChanged])
 
     const pageSwitch = (page, limit) => {
         fetchItems(page, limit)
@@ -83,6 +94,7 @@ export default function Category() {
                 pageSwitch={pageSwitch}
                 setDataPerPage={setDataPerPage}
                 dataPerPage={dataPerPage}
+                statusChange={statusChange}
             />
             <OrderList data={Category} head={head} />
         </Box>

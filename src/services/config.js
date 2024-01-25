@@ -14,6 +14,10 @@ const updateItem = (data) => {
     return http.put(`/api/item`, data)
 }
 
+const itemStatusChange = (data) => {
+    return http.put(`/api/item/status`, data)
+}
+
 const getItemById = (id) => {
     return http.get(`/api/item/${id}`)
 }
@@ -36,7 +40,7 @@ const addImage = async (data) => {
     }
 }
 
-const getCategories = (page = 1, limit = 10) => {
+const getCategories = (page, limit) => {
     return http.get(`/api/category?page=${page}&limit=${limit}`)
 }
 
@@ -46,6 +50,10 @@ const addCategory = (data) => {
 
 const updateCategory = (data) => {
     return http.put('/api/category', data)
+}
+
+const categoryStatusChange = (data) => {
+    return http.put(`/api/category/status`, data)
 }
 
 const getCategoryById = (id) => {
@@ -59,11 +67,13 @@ const configServ = {
     getItems,
     addtems,
     updateItem,
+    itemStatusChange,
     getItemById,
     getImageByItemId,
     addImage,
     getCategories,
     addCategory,
+    categoryStatusChange,
     updateCategory,
     getCategoryById,
 }

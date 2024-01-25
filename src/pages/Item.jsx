@@ -14,6 +14,7 @@ export default function Item() {
 
     const [items, setItems] = useState({})
     const [dataPerPage, setDataPerPage] = useState(10)
+    const [isChanged, setIsChanged] = useState(false)
     const navigate = useNavigate()
 
     const fetchItems = async (page = 1, limit = dataPerPage) => {
@@ -22,9 +23,19 @@ export default function Item() {
         // console.log(data)
     }
 
+    const statusChange = async (id) => {
+        try {
+            const result = await configServ.itemStatusChange({ id })
+            console.log(result)
+            setIsChanged((state) => (!state))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         fetchItems()
-    }, [dataPerPage])
+    }, [dataPerPage, isChanged])
 
     const pageSwitch = (page, limit) => {
         fetchItems(page, limit)
@@ -86,6 +97,7 @@ export default function Item() {
                 pageSwitch={pageSwitch}
                 setDataPerPage={setDataPerPage}
                 dataPerPage={dataPerPage}
+                statusChange={statusChange}
             />
             <OrderList data={items} head={head} />
         </Box>

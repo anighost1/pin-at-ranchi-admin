@@ -134,7 +134,14 @@ export default function Sidebar() {
                         <ListItemButton>
                             <DashboardRoundedIcon />
                             <ListItemContent>
-                                <Typography level="title-sm">Dashboard</Typography>
+                                {/* <Typography level="title-sm">Dashboard</Typography> */}
+                                <ListItemButton
+                                    component={NavLink}
+                                    to={'/'}
+                                    selected={location.pathname === '/'}
+                                >
+                                    Dashboard
+                                </ListItemButton>
                             </ListItemContent>
                         </ListItemButton>
                     </ListItem>
@@ -176,7 +183,7 @@ export default function Sidebar() {
                             </List>
                         </Toggler>
                     </ListItem>
-                    <ListItem>
+                    {/* <ListItem>
                         <ListItemButton
                             role="menuitem"
                             component="a"
@@ -190,10 +197,9 @@ export default function Sidebar() {
                                 4
                             </Chip>
                         </ListItemButton>
-                    </ListItem>
-                    <ListItem nested>
+                    </ListItem> */}
+                    {/* <ListItem nested>
                         <Toggler
-                            defaultExpanded
                             renderToggle={({ open, setOpen }) => (
                                 <ListItemButton onClick={() => setOpen(!open)}>
                                     <GroupRoundedIcon />
@@ -218,34 +224,11 @@ export default function Sidebar() {
                                 </ListItem>
                             </List>
                         </Toggler>
-                    </ListItem>
+                    </ListItem> */}
                 </List>
-                {/* <List
-                    size="sm"
-                    sx={{
-                        mt: 'auto',
-                        flexGrow: 0,
-                        '--ListItem-radius': (theme) => theme.vars.radius.sm,
-                        '--List-gap': '8px',
-                        mb: 2,
-                    }}
-                >
-                    <ListItem>
-                        <ListItemButton>
-                            <SupportRoundedIcon />
-                            Support
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemButton>
-                            <SettingsRoundedIcon />
-                            Settings
-                        </ListItemButton>
-                    </ListItem>
-                </List> */}
             </Box>
             <Divider />
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+            {/* <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <Avatar
                     variant="outlined"
                     size="sm"
@@ -258,7 +241,7 @@ export default function Sidebar() {
                 <IconButton size="sm" variant="plain" color="neutral">
                     <LogoutRoundedIcon />
                 </IconButton>
-            </Box>
+            </Box> */}
         </Sheet>
     );
 }
