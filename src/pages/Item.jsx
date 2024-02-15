@@ -99,7 +99,11 @@ export default function Item() {
                 dataPerPage={dataPerPage}
                 statusChange={statusChange}
             />
-            <OrderList data={items} head={head} />
+            <OrderList
+                data={items}
+                head={head}
+                pageSwitch={pageSwitch}
+            />
         </Box>
     );
 }

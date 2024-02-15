@@ -96,7 +96,12 @@ export default function Category() {
                 dataPerPage={dataPerPage}
                 statusChange={statusChange}
             />
-            <OrderList data={Category} head={head} />
+            <OrderList
+                data={Category}
+                head={head}
+                pageSwitch={pageSwitch}
+                statusChange={statusChange}
+            />
         </Box>
     );
 }

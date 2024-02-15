@@ -76,7 +76,7 @@ function RowMenu({ id, status, statusChange }) {
                 <Divider />
                 <MenuItem
                     color={status ? 'danger' : 'success'}
-                    onClick={()=>{statusChange(id)}}
+                    onClick={() => { statusChange(id) }}
                 >
                     {status ? 'Inactive' : 'Active'}
                 </MenuItem>
@@ -87,6 +87,7 @@ function RowMenu({ id, status, statusChange }) {
 
 
 export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDataPerPage, statusChange }) {
+
     const [rows, setRows] = React.useState([]);
     const [order, setOrder] = React.useState('desc');
     const [selected, setSelected] = React.useState([]);

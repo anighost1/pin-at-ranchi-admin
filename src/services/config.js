@@ -60,6 +60,17 @@ const getCategoryById = (id) => {
     return http.get(`/api/category/${id}`)
 }
 
+const login = (data) => {
+    return http.post(`/api/auth`, data)
+}
+
+const getAdminById = (id) => {
+    return http.get(`/api/admin/${id}`)
+}
+
+const logout = () => {
+    return http.post(`/api/auth/logout`)
+}
 
 
 
@@ -76,6 +87,9 @@ const configServ = {
     categoryStatusChange,
     updateCategory,
     getCategoryById,
+    login,
+    getAdminById,
+    logout,
 }
 
 export default configServ;

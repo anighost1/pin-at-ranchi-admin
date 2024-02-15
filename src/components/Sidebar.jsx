@@ -22,6 +22,8 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils';
 
 import { NavLink, useLocation } from 'react-router-dom';
+import userContext from '../context/userContext/userContext';
+import configServ from '../services/config';
 
 function Toggler({
     defaultExpanded = false,
@@ -51,6 +53,30 @@ function Toggler({
 export default function Sidebar() {
 
     const location = useLocation()
+    const { user } = React.useContext(userContext)
+
+    function getInitials(name) {
+        if (!name) {
+            return '...'
+        }
+        const words = name.split(' ');
+        let initials = '';
+        for (let i = 0; i < words.length; i++) {
+            initials += words[i].charAt(0).toUpperCase();
+        }
+
+        return initials;
+    }
+
+
+    const logout = async () => {
+        const isOkay = window.confirm('You are about to be logged out')
+        if (isOkay) {
+            await configServ.logout()
+            window.location.reload()
+        }
+    }
+
 
     return (
         <Sheet
@@ -105,7 +131,7 @@ export default function Sidebar() {
                 onClick={() => closeSidebar()}
             />
             <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                <Typography level="title-lg">Pin At Ranchi</Typography>
+                <Typography level="title-lg">Pin at Ranchi</Typography>
                 <ColorSchemeToggle sx={{ ml: 'auto' }} />
             </Box>
             {/* <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" /> */}
@@ -228,20 +254,19 @@ export default function Sidebar() {
                 </List>
             </Box>
             <Divider />
-            {/* <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                <Avatar
-                    variant="outlined"
-                    size="sm"
-                    src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-                />
+            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                <Avatar>
+                    {user && getInitials(user.name)}
+                </Avatar>
                 <Box sx={{ minWidth: 0, flex: 1 }}>
-                    <Typography level="title-sm">Siriwat K.</Typography>
-                    <Typography level="body-xs">siriwatk@test.com</Typography>
+                    <Typography level="title-sm">{user?.name || '...'}</Typography>
+                    <Typography level="body-xs">{user?.email || '...'
+                        || '...'}</Typography>
                 </Box>
-                <IconButton size="sm" variant="plain" color="neutral">
+                <IconButton size="sm" variant="plain" color="neutral" onClick={logout}>
                     <LogoutRoundedIcon />
                 </IconButton>
-            </Box> */}
+            </Box>
         </Sheet>
     );
 }
