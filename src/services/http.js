@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // export const appServiceName = 'http://localhost:6969'; 
-export const appServiceName = process.env.REACT_APP_BASE_URL; 
+export const appServiceName = process.env.REACT_APP_BASE_URL;
 
 class RestfulProvider {
     constructor() {
@@ -16,12 +16,10 @@ class RestfulProvider {
 
     makeCall = (url, data, axiosMethod) => {
         const header = {
-            ...((url === '/api/print_invoice2' || 
-                url === '/api/print-order') &&
-            {responseType: 'arraybuffer'}),
             headers: {
                 "Content-Type": "application/json",
             },
+            withCredentials: true
         };
 
         if (localStorage.getItem("token")) {
@@ -33,11 +31,11 @@ class RestfulProvider {
 
             response
                 .then((res) => {
-                    resolve(res.data);                                     
+                    resolve(res.data);
                 })
                 .catch((error) => {
                     reject(
-                        error 
+                        error
                         // ||
                         // "Server is down, please check after some time !!"
                     );

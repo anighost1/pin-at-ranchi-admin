@@ -26,7 +26,7 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 
 
-function RowMenu({ id }) {
+function RowMenu({ id, status, statusChange }) {
     const navigate = useNavigate()
     return (
         <Dropdown>
@@ -38,17 +38,20 @@ function RowMenu({ id }) {
             </MenuButton>
             <Menu size="sm" sx={{ minWidth: 140 }}>
                 <MenuItem onClick={() => { navigate(`details/${id}`) }}>Edit</MenuItem>
-                <MenuItem>Rename</MenuItem>
-                <MenuItem>Move</MenuItem>
                 <Divider />
-                <MenuItem color="danger">Delete</MenuItem>
+                <MenuItem
+                    color={status ? 'danger' : 'success'}
+                    onClick={() => { statusChange(id) }}
+                >
+                    {status ? 'Inactive' : 'Active'}
+                </MenuItem>
             </Menu>
         </Dropdown>
     );
 }
 
 
-export default function OrderList({ data, head }) {
+export default function OrderList({ data, head, pageSwitch, statusChange }) {
 
     const [listItems, setListItems] = React.useState([]);
 
@@ -57,6 +60,18 @@ export default function OrderList({ data, head }) {
             setListItems(data.data)
         }
     }, [data])
+
+    const nextPage = () => {
+        if (data.next) {
+            pageSwitch(data.next?.page, data.next?.limit)
+        }
+    }
+    const prevPage = () => {
+        if (data.prev) {
+            pageSwitch(data.prev?.page, data.prev?.limit)
+        }
+    }
+
 
     return (
         <Box sx={{ display: { xs: 'block', sm: 'none' }, width: '100%' }}>
@@ -89,7 +104,7 @@ export default function OrderList({ data, head }) {
                                     </Typography>
                                 ))}
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                    <RowMenu id={listItem._id} />
+                                    <RowMenu id={listItem._id} status={listItem.status} statusChange={statusChange} />
                                 </Box>
                             </div>
                         </ListItemContent>
@@ -114,17 +129,19 @@ export default function OrderList({ data, head }) {
                     variant="outlined"
                     color="neutral"
                     size="sm"
+                    onClick={prevPage}
                 >
                     <KeyboardArrowLeftIcon />
                 </IconButton>
                 <Typography level="body-sm" mx="auto">
-                    Page 1 of 10
+                    {`Page ${data.currentPage} of ${data.totalPage}`}
                 </Typography>
                 <IconButton
                     aria-label="next page"
                     variant="outlined"
                     color="neutral"
                     size="sm"
+                    onClick={nextPage}
                 >
                     <KeyboardArrowRightIcon />
                 </IconButton>
