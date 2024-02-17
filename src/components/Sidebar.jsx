@@ -24,6 +24,7 @@ import { closeSidebar } from '../utils';
 import { NavLink, useLocation } from 'react-router-dom';
 import userContext from '../context/userContext/userContext';
 import configServ from '../services/config';
+import Cookies from 'js-cookie';
 
 function Toggler({
     defaultExpanded = false,
@@ -72,7 +73,7 @@ export default function Sidebar() {
     const logout = async () => {
         const isOkay = window.confirm('You are about to be logged out')
         if (isOkay) {
-            await configServ.logout()
+            Cookies.remove('token')
             window.location.reload()
         }
     }

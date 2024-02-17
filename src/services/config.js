@@ -60,32 +60,12 @@ const getCategoryById = (id) => {
     return http.get(`/api/category/${id}`)
 }
 
-// const login = (data) => {
-//     return http.post(`/api/auth`, data)
-// }
+const login = (data) => {
+    return http.post(`/api/auth`, data)
+}
 
 const getAdminById = (id) => {
     return http.get(`/api/admin/${id}`)
-}
-
-const logout = () => {
-    return http.post(`/api/auth/logout`)
-}
-
-
-const login = async (data) => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true
-    }
-    try {
-        const result = await axios.post(`${appServiceName}/api/auth`, data, config)
-        return result.data
-    } catch (err) {
-        console.log(err)
-    }
 }
 
 
@@ -104,7 +84,6 @@ const configServ = {
     getCategoryById,
     login,
     getAdminById,
-    logout,
 }
 
 export default configServ;

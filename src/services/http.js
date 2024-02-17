@@ -19,7 +19,6 @@ class RestfulProvider {
             headers: {
                 "Content-Type": "application/json",
             },
-            withCredentials: true
         };
 
         if (localStorage.getItem("token")) {
