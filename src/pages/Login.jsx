@@ -12,7 +12,6 @@ import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
-import userContext from '../context/userContext/userContext';
 
 import configServ from '../services/config';
 import { useNavigate, redirect } from 'react-router-dom';
@@ -54,7 +53,6 @@ function ColorSchemeToggle(props) {
 export default function Login() {
 
     const [formData, setFormData] = React.useState({})
-    const { setUser } = React.useContext(userContext)
     const navigate = useNavigate()
 
     const handleOnChange = (e) => {
@@ -69,8 +67,7 @@ export default function Login() {
         event.preventDefault();
         try {
             const result = await configServ.login(formData)
-            delete result.message
-            setUser(result)
+            Cookies.set('token', result.token, { expires: 1 })
             navigate('/', { replace: true })
         } catch (err) {
             console.log(err)
