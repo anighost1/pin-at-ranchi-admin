@@ -19,7 +19,7 @@ import {
     Autocomplete
 } from '@mui/joy';
 import Tab, { tabClasses } from '@mui/joy/Tab';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import configServ from '../services/config';
 import ItemImageUpload from './ItemImageUpload';
 
@@ -35,6 +35,7 @@ export default function ItemDetails() {
     const [formData, setFormData] = useState({})
     const [categoryList, setCategoryList] = useState([])
     const [isEdit, setIsEdit] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -74,6 +75,10 @@ export default function ItemDetails() {
         }
     }, [itemId])
 
+    const cleaner = () => {
+        setFormData({})
+    }
+
 
     const handleSubmit = async () => {
         console.log(formData)
@@ -81,6 +86,8 @@ export default function ItemDetails() {
             try {
                 const result = await configServ.addtems(formData)
                 console.log('Successfully added')
+                cleaner()
+                navigate('/item')
             } catch (err) {
                 console.log(err)
             }
@@ -88,6 +95,8 @@ export default function ItemDetails() {
             try {
                 const result = await configServ.updateItem(formData)
                 console.log('Successfully Updated')
+                cleaner()
+                navigate('/item')
             } catch (err) {
                 console.log(err)
             }
@@ -256,7 +265,7 @@ export default function ItemDetails() {
                                 </Grid>
                                 <Grid xs={12} sm={6}>
                                     <FormControl sx={{ flexGrow: 1 }}>
-                                        <FormLabel>Address Line 1</FormLabel>
+                                        <FormLabel>Address Line 2</FormLabel>
                                         <Input
                                             size="sm"
                                             name='addressLine2'

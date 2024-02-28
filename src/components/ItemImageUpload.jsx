@@ -10,6 +10,7 @@ import {
 } from '@mui/joy';
 import configServ from '../services/config';
 import ImageCard from './ImageList';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function ItemImageUpload({ id }) {
@@ -17,6 +18,7 @@ export default function ItemImageUpload({ id }) {
     const [files, setFiles] = useState([]);
     const [itemImg, setItemImg] = useState([]);
     const [processing, setProcessing] = useState(false);
+    const navigate = useNavigate()
 
     const handleFileChange = (event) => {
         const selectedFiles = event.target.files;
@@ -35,6 +37,7 @@ export default function ItemImageUpload({ id }) {
             try {
                 await configServ.addImage(dataToSend)
                 console.log('Upload Successfully')
+                navigate('/item')
             } catch (err) {
                 console.log(err)
             }
