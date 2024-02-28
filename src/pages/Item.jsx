@@ -103,6 +103,7 @@ export default function Item() {
                 data={items}
                 head={head}
                 pageSwitch={pageSwitch}
+                statusChange={statusChange}
             />
         </Box>
     );
