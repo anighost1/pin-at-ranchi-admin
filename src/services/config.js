@@ -2,8 +2,8 @@ import axios from "axios";
 import http from "./http";
 import { appServiceName } from "./http";
 
-const getItems = (page = 1, limit = 10) => {
-    return http.get(`/api/item?page=${page}&limit=${limit}`)
+const getItems = (page = 1, limit = 10, search = '', status = '', category = '') => {
+    return http.get(`/api/item?page=${page}&limit=${limit}&search=${search}&status=${status}&category=${category}`)
 }
 
 const addtems = (data) => {
@@ -40,8 +40,8 @@ const addImage = async (data) => {
     }
 }
 
-const getCategories = (page, limit) => {
-    return http.get(`/api/category?page=${page}&limit=${limit}`)
+const getCategories = (page, limit, search = '', status = '') => {
+    return http.get(`/api/category?page=${page}&limit=${limit}&search=${search}&status=${status}`)
 }
 
 const addCategory = (data) => {

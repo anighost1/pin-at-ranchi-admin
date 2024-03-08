@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // export const appServiceName = 'http://localhost:6969'; 
 export const appServiceName = process.env.REACT_APP_BASE_URL;
@@ -8,7 +9,8 @@ class RestfulProvider {
         this.setCommonHeaders();
     }
     setCommonHeaders = () => {
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
+        const token = Cookies.get('token')
 
         token &&
             (axios.defaults.headers.common["Authorization"] = `Bearer ${token}`);
