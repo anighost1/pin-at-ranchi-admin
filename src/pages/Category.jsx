@@ -16,10 +16,17 @@ export default function Category() {
     const [dataPerPage, setDataPerPage] = useState(10)
     const [isChanged, setIsChanged] = useState(false)
     const navigate = useNavigate()
+    const [searchKeyword, setSearchKeyword] = useState('')
+    const [statusFilter, setStatusFilter] = useState('')
 
 
-    const fetchItems = async (page = 1, limit = dataPerPage) => {
-        const data = await configServ.getCategories(page, limit)
+    // useEffect(() => {
+    //     console.log('search:', searchKeyword)
+    //     console.log('status:', statusFilter)
+    // }, [searchKeyword, statusFilter])
+
+    const fetchItems = async (page = 1, limit = dataPerPage, search = searchKeyword, status = statusFilter) => {
+        const data = await configServ.getCategories(page, limit, search, status)
         setCategory(data)
         // console.log(data)
     }
@@ -95,6 +102,11 @@ export default function Category() {
                 setDataPerPage={setDataPerPage}
                 dataPerPage={dataPerPage}
                 statusChange={statusChange}
+                searchKeyword={searchKeyword}
+                setSearchKeyword={setSearchKeyword}
+                statusFilter={statusFilter}
+                setStatusFilter={setStatusFilter}
+                setIsChanged={setIsChanged}
             />
             <OrderList
                 data={Category}

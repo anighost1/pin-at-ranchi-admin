@@ -23,6 +23,7 @@ import MenuItem from '@mui/joy/MenuItem';
 import Dropdown from '@mui/joy/Dropdown';
 
 import { useNavigate } from 'react-router-dom';
+import configServ from '../services/config';
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
@@ -86,13 +87,36 @@ function RowMenu({ id, status, statusChange }) {
 }
 
 
-export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDataPerPage, statusChange }) {
+export default function OrderTable({
+    data,
+    head,
+    pageSwitch,
+    dataPerPage,
+    setDataPerPage,
+    statusChange,
+    searchKeyword,
+    setSearchKeyword,
+    statusFilter,
+    setStatusFilter,
+    categoryFilter = undefined,
+    setCategoryFilter = undefined,
+    setIsChanged
+}) {
 
     const [rows, setRows] = React.useState([]);
     const [order, setOrder] = React.useState('desc');
     const [selected, setSelected] = React.useState([]);
     const [open, setOpen] = React.useState(false);
+    const [categoryList, setCategoryList] = React.useState([]);
 
+    React.useEffect(() => {
+        const fetchCategory = async () => {
+            const data = await configServ.getCategories()
+            setCategoryList(data.data)
+            // console.log(data)
+        }
+        fetchCategory()
+    }, [])
 
     const handleDataPerPage = (e, value) => {
         setDataPerPage(value)
@@ -105,19 +129,28 @@ export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDat
                     size="sm"
                     placeholder="Filter by status"
                     slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
+                    value={statusFilter}
+                    onChange={(e, value) => { setStatusFilter(value); setIsChanged((state) => (!state)) }}
                 >
                     <Option value={''}>All</Option>
                     <Option value={true}>Active</Option>
                     <Option value={false}>Inactive</Option>
                 </Select>
             </FormControl>
-            <FormControl size="sm">
+            <FormControl size="sm" sx={{ display: categoryFilter === undefined ? 'none' : 'block' }}>
                 <FormLabel>Category</FormLabel>
-                <Select size="sm" placeholder="All">
-                    <Option value="all">All</Option>
-                    <Option value="refund">Refund</Option>
-                    <Option value="purchase">Purchase</Option>
-                    <Option value="debit">Debit</Option>
+                <Select
+                    size="sm"
+                    placeholder="Filter by Category"
+                    value={categoryFilter}
+                    onChange={(e, value) => { setCategoryFilter(value); setIsChanged((state) => (!state)) }}
+                >
+                    <Option value=''>All</Option>
+                    {
+                        categoryList.map((item, index) => (
+                            <Option key={index} value={item._id}>{item.name}</Option>
+                        ))
+                    }
                 </Select>
             </FormControl>
             <FormControl size="sm">
@@ -214,7 +247,24 @@ export default function OrderTable({ data, head, pageSwitch, dataPerPage, setDat
             >
                 <FormControl sx={{ flex: 1 }} size="sm">
                     <FormLabel>Search</FormLabel>
-                    <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
+                    <Input
+                        size="sm"
+                        placeholder="Search"
+                        value={searchKeyword}
+                        onChange={(e) => { setSearchKeyword(e.target.value) }}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                setIsChanged((state) => (!state))
+                            }
+                        }}
+                        endDecorator={
+                            <IconButton
+                                onClick={() => { setIsChanged((state) => (!state)) }}
+                            >
+                                <SearchIcon />
+                            </IconButton>
+                        }
+                    />
                 </FormControl>
                 {renderFilters()}
             </Box>

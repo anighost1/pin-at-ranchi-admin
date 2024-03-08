@@ -16,12 +16,21 @@ export default function Item() {
     const [dataPerPage, setDataPerPage] = useState(10)
     const [isChanged, setIsChanged] = useState(false)
     const navigate = useNavigate()
+    const [searchKeyword, setSearchKeyword] = useState('')
+    const [statusFilter, setStatusFilter] = useState('')
+    const [categoryFilter, setCategoryFilter] = useState('')
 
-    const fetchItems = async (page = 1, limit = dataPerPage) => {
-        const data = await configServ.getItems(page, limit)
+    const fetchItems = async (page = 1, limit = dataPerPage, search = searchKeyword, status = statusFilter, category = categoryFilter) => {
+        const data = await configServ.getItems(page, limit, search, status, category)
         setItems(data)
         // console.log(data)
     }
+
+    // useEffect(() => {
+    //     console.log('search:', searchKeyword)
+    //     console.log('status:', statusFilter)
+    //     console.log('category:', categoryFilter)
+    // }, [searchKeyword, statusFilter, categoryFilter])
 
     const statusChange = async (id) => {
         try {
@@ -98,6 +107,13 @@ export default function Item() {
                 setDataPerPage={setDataPerPage}
                 dataPerPage={dataPerPage}
                 statusChange={statusChange}
+                searchKeyword={searchKeyword}
+                setSearchKeyword={setSearchKeyword}
+                statusFilter={statusFilter}
+                setStatusFilter={setStatusFilter}
+                categoryFilter={categoryFilter}
+                setCategoryFilter={setCategoryFilter}
+                setIsChanged={setIsChanged}
             />
             <OrderList
                 data={items}
