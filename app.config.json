@@ -1,7 +1,7 @@
 {
     "apps": [
         {
-            "name": "your-app",
+            "name": "paradmin-server",
             "script": "npx",
             "interpreter": "none",
             "args": "serve -p 3002 -T"
