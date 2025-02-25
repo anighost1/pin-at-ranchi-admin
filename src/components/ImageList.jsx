@@ -10,39 +10,30 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { IconButton } from '@mui/joy';
 
 export default function ImageCard({ data }) {
-    useEffect(()=>{
+    useEffect(() => {
         console.log(data)
-    },[])
+    }, [])
     return (
         <ImageList
             sx={{
-                width: 500,
+                width: '100%',
                 height: 'auto'
             }}
             cols={3}
             rowHeight={164}>
-            {data.map((item) => (
+            {data.map((item, index) => (
                 <ImageListItem
-                    key={item._id}
+                    key={index}
                     sx={{
                         border: '1px solid #33333333',
                         borderRadius: 10
                     }}
                 >
                     <img
-                        src={item.image}
+                        src={item}
                         alt={item.alt}
                         loading="lazy"
                     />
-                    <IconButton
-                    sx={{
-                        position:'absolute',
-                        backgroundColor:'#ffffff77'
-                    }}
-                    >
-                        {item.status?<CheckCircleIcon color='success'/>:<CancelIcon color='danger'/>}
-                    </IconButton>
-
                 </ImageListItem>
             ))}
         </ImageList>

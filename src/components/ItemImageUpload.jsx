@@ -50,8 +50,8 @@ export default function ItemImageUpload({ id }) {
         try {
             setProcessing(true)
             const result = await configServ.getImageByItemId(id)
-            console.log(result)
-            setItemImg(result)
+            // console.log(result)
+            setItemImg(result?.image)
             setProcessing(false)
         } catch (err) {
             console.log(err)

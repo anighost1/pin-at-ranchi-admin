@@ -98,8 +98,8 @@ export default function OrderTable({
     setSearchKeyword,
     statusFilter,
     setStatusFilter,
-    categoryFilter = undefined,
-    setCategoryFilter = undefined,
+    // categoryFilter = undefined,
+    // setCategoryFilter = undefined,
     setIsChanged
 }) {
 
@@ -107,16 +107,16 @@ export default function OrderTable({
     const [order, setOrder] = React.useState('desc');
     const [selected, setSelected] = React.useState([]);
     const [open, setOpen] = React.useState(false);
-    const [categoryList, setCategoryList] = React.useState([]);
+    // const [categoryList, setCategoryList] = React.useState([]);
 
-    React.useEffect(() => {
-        const fetchCategory = async () => {
-            const data = await configServ.getCategories()
-            setCategoryList(data.data)
-            // console.log(data)
-        }
-        fetchCategory()
-    }, [])
+    // React.useEffect(() => {
+    //     const fetchCategory = async () => {
+    //         const data = await configServ.getCategories()
+    //         setCategoryList(data.data)
+    //         // console.log(data)
+    //     }
+    //     fetchCategory()
+    // }, [])
 
     const handleDataPerPage = (e, value) => {
         setDataPerPage(value)
@@ -137,7 +137,7 @@ export default function OrderTable({
                     <Option value={false}>Inactive</Option>
                 </Select>
             </FormControl>
-            <FormControl size="sm" sx={{ display: categoryFilter === undefined ? 'none' : 'block' }}>
+            {/* <FormControl size="sm" sx={{ display: categoryFilter === undefined ? 'none' : 'block' }}>
                 <FormLabel>Category</FormLabel>
                 <Select
                     size="sm"
@@ -152,7 +152,7 @@ export default function OrderTable({
                         ))
                     }
                 </Select>
-            </FormControl>
+            </FormControl> */}
             <FormControl size="sm">
                 <FormLabel>Data per page</FormLabel>
                 <Select
@@ -294,7 +294,7 @@ export default function OrderTable({
                 >
                     <thead>
                         <tr>
-                            <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
+                            {/* <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
                                 <Checkbox
                                     size="sm"
                                     indeterminate={
@@ -313,12 +313,7 @@ export default function OrderTable({
                                     }
                                     sx={{ verticalAlign: 'text-bottom' }}
                                 />
-                            </th>
-                            {/* <th style={{ width: 100, padding: '12px 6px' }}>Sr. No.</th>
-                            <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
-                            <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
-                            <th style={{ width: 240, padding: '12px 6px' }}>Customer</th>
-                            <th style={{ width: 140, padding: '12px 6px' }}> </th> */}
+                            </th> */}
                             {head.map((item, index) => (
                                 <th key={index}>{item.name}</th>
                             ))}
@@ -328,7 +323,7 @@ export default function OrderTable({
                     <tbody>
                         {stableSort(rows, getComparator(order, 'id')).map((row) => (
                             <tr key={row._id}>
-                                <td style={{ textAlign: 'center', width: 120 }}>
+                                {/* <td style={{ textAlign: 'center', width: 120 }}>
                                     <Checkbox
                                         size="sm"
                                         checked={selected.includes(row._id)}
@@ -343,7 +338,7 @@ export default function OrderTable({
                                         slotProps={{ checkbox: { sx: { textAlign: 'left' } } }}
                                         sx={{ verticalAlign: 'text-bottom' }}
                                     />
-                                </td>
+                                </td> */}
 
                                 {head.map((item, index) => (
                                     <td key={index}>

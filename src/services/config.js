@@ -23,7 +23,7 @@ const getItemById = (id) => {
 }
 
 const getImageByItemId = (id) => {
-    return http.get(`/api/image/by-item/all/${id}`)
+    return http.get(`/api/item/image/${id}`)
 }
 
 const addImage = async (data) => {
