@@ -36,7 +36,8 @@ const addImage = async (data) => {
         const result = await axios.post(`${appServiceName}/api/image`, data, config)
         console.log(result.data)
     } catch (err) {
-        console.log(err)
+        // console.log(err)
+        throw err
     }
 }
 

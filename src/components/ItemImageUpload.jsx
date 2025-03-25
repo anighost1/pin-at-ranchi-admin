@@ -40,6 +40,9 @@ export default function ItemImageUpload({ id }) {
                 navigate('/item')
             } catch (err) {
                 console.log(err)
+                if (String(err.status).startsWith('4')) {
+                    alert(err?.response?.data?.message)
+                }
             }
         } else {
             console.log('Select atleast one image')
@@ -68,10 +71,10 @@ export default function ItemImageUpload({ id }) {
     return (
         <Stack>
             <Box>
-                {processing && <CircularProgress size='sm'/>}
+                {processing && <CircularProgress size='sm' />}
                 <ImageCard data={itemImg} />
             </Box>
-            <Divider/>
+            <Divider />
             <Box>
                 <Typography variant="h5">Upload Image(s)</Typography>
                 <Box
