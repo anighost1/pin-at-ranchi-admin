@@ -6,8 +6,6 @@ import {
     FormLabel,
     Input,
     Stack,
-    Select,
-    Option,
     Typography,
     Tabs,
     TabList,
@@ -33,18 +31,8 @@ export default function ItemDetails() {
 
     const { itemId } = useParams()
     const [formData, setFormData] = useState({})
-    const [categoryList, setCategoryList] = useState([])
     const [isEdit, setIsEdit] = useState(false)
     const navigate = useNavigate()
-
-    useEffect(() => {
-        const fetchCategory = async () => {
-            const data = await configServ.getCategories()
-            setCategoryList(data.data)
-            // console.log(data)
-        }
-        fetchCategory()
-    }, [])
 
     const handleOnchange = (e) => {
         const { name, value } = e.target
@@ -167,36 +155,6 @@ export default function ItemDetails() {
                                             value={formData.name || ''}
                                             onChange={handleOnchange}
                                         />
-                                    </FormControl>
-                                </Grid>
-                                <Grid xs={12} sm={4}>
-                                    <FormControl sx={{ display: { sm: 'contents' } }}>
-                                        <FormLabel>Category</FormLabel>
-                                        <Select
-                                            size="sm"
-                                            slotProps={{
-                                                listbox: {
-                                                    sx: {
-                                                        zIndex: 9999,
-                                                    },
-                                                },
-                                            }}
-                                            value={formData.category || ''}
-                                            onChange={(e, value) => { handleOnchangeSelect('category', value) }}
-                                        >
-                                            <Option value={''}>
-                                                <Typography textColor="text.tertiary" ml={0.5}>
-                                                    Select
-                                                </Typography>
-                                            </Option>
-                                            {categoryList.map((item) => (
-                                                <Option key={item._id} value={item._id}>
-                                                    <Typography textColor="text.tertiary" ml={0.5}>
-                                                        {item.name}
-                                                    </Typography>
-                                                </Option>
-                                            ))}
-                                        </Select>
                                     </FormControl>
                                 </Grid>
                                 <Grid xs={12} sm={6}>

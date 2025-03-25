@@ -62,11 +62,6 @@ export default function Item() {
             position: 'levelxs'
         },
         {
-            name: 'Category',
-            row: 'category.name',
-            position: 'bullet'
-        },
-        {
             name: 'Status',
             row: 'status',
             position: 'right'

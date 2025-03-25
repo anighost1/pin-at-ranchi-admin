@@ -40,6 +40,9 @@ export default function ItemImageUpload({ id }) {
                 navigate('/item')
             } catch (err) {
                 console.log(err)
+                if (String(err.status).startsWith('4')) {
+                    alert(err?.response?.data?.message)
+                }
             }
         } else {
             console.log('Select atleast one image')
@@ -50,8 +53,8 @@ export default function ItemImageUpload({ id }) {
         try {
             setProcessing(true)
             const result = await configServ.getImageByItemId(id)
-            console.log(result)
-            setItemImg(result)
+            // console.log(result)
+            setItemImg(result?.image)
             setProcessing(false)
         } catch (err) {
             console.log(err)
@@ -68,10 +71,10 @@ export default function ItemImageUpload({ id }) {
     return (
         <Stack>
             <Box>
-                {processing && <CircularProgress size='sm'/>}
+                {processing && <CircularProgress size='sm' />}
                 <ImageCard data={itemImg} />
             </Box>
-            <Divider/>
+            <Divider />
             <Box>
                 <Typography variant="h5">Upload Image(s)</Typography>
                 <Box
